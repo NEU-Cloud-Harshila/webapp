@@ -30,10 +30,6 @@ variable "subnet_id" {
   default = "subnet-029fd78b62934323c"
 }
 
-variable "db_password" {
-  type = string
-}
-
 variable "ami_users" {
   type = list(string)
   default = []
@@ -84,8 +80,8 @@ build {
   ]
 
   provisioner "file" {
-    source = "webapp.zip"
-    destination = "/home/ec2-user/webapp.zip"
+    source = "webapp1.zip"
+    destination = "/home/ec2-user/webapp1.zip"
   }
 
   provisioner "file" {
@@ -96,8 +92,7 @@ build {
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
-      "CHECKPOINT_DISABLE=1",
-      "DB_PASSWORD=${var.db_password}"
+      "CHECKPOINT_DISABLE=1"
     ]
     script = "./customScript.sh"
   }
