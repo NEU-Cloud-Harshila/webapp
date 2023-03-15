@@ -11,4 +11,4 @@ unzip webapp.zip -d webapp
 cd /home/ec2-user/webapp
 npm i
 
-sudo mv /tmp/web.service /etc/systemd/system/web.service
+sudo cp ./packer/webapp.service /etc/systemd/system/
