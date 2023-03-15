@@ -3,10 +3,12 @@ const AWS = require('aws-sdk');
 const BUCKET_NAME = process.env.BUCKETNAME;
 require("dotenv").config();
 const fs = require("fs");
-const s3 = new AWS.S3({
-    accessKeyId: "AKIAZLEE6TO4ACPH2FWV",
-    secretAccessKey: "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",
-});
+//const s3 = new AWS.S3({
+  //  accessKeyId: "AKIAZLEE6TO4ACPH2FWV",
+   // secretAccessKey: "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",
+//});
+
+const s3 = new AWS.S3();
 
 const checkFileType = (type) => {
     let fileTypes = ['png', 'jpeg', 'jpg', 'gif'];
