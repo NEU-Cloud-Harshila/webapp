@@ -80,8 +80,8 @@ build {
   ]
 
   provisioner "file" {
-    source = "webapp1.zip"
-    destination = "/home/ec2-user/webapp1.zip"
+    source = "webapp.zip"
+    destination = "/home/ec2-user/webapp.zip"
   }
 
   provisioner "file" {
