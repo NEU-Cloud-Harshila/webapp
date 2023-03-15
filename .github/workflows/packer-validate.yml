@@ -27,10 +27,10 @@ jobs:
       - name: Zip file
         uses: montudor/action-zip@v1
         with:
-          args: zip -r webapp.zip webapp/
+          args: zip -r webapp1.zip webapp1/
 
       - name: Delete copied files
-        run: rm -rf webapp && ls -R
+        run: rm -rf webapp1 && ls -R
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
@@ -44,4 +44,4 @@ jobs:
 
       - name: Run `packer validate`
         id: validate
-        run: "packer validate -var 'aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}' -var 'aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}' -var 'db_password=${{ secrets.DB_PASSWORD }}' -var 'ami_users=${{ secrets.AMI_USERS }}' --var-file=aws.pkvars.hcl ami.pkr.hcl"
+        run: "packer validate -var 'aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}' -var 'aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}' --var-file=aws.pkvars.hcl ami.pkr.hcl"
