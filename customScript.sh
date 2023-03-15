@@ -9,8 +9,8 @@ sudo yum repolist
 sudo amazon-linux-extras install epel -y
 
 sudo yum install unzip -y
-cd ~/ && unzip webapp1.zip
-cd ~/webapp1 && npm install
+cd ~/ && unzip webapp.zip
+cd ~/webapp && npm install
 npm run build
 
 sudo mv /tmp/web.service /etc/systemd/system/web.service
