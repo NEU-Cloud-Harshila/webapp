@@ -1,17 +1,12 @@
 [Unit]
-Description=CSYE 6225 webapp
-After=cloud-final.service
+Description= Webapp
+After=network.target
 
 [Service]
-ExecStart=/home/ec2-user/.nvm/versions/node/v16.19.1/bin/node /home/ec2-user/webapp/server.js
-Type=simple
-User=ec2-user
+ExecStart=/usr/bin/npm run start
+WorkingDirectory=/home/ec2-user/webapp
 Restart=always
-RestartSec=10
-StartLimitInterval=0
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=csye6225-webapp
+User=ec2-user
 
 [Install]
 WantedBy=multi-user.target

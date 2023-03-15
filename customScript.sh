@@ -1,18 +1,14 @@
-sleep 30
+#!/bin/bash
+
 sudo yum update -y
+sudo yum upgrade -y
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-. ~/.nvm/nvm.sh
-nvm install 16 -y
+sudo yum install -y gcc-c++ make
+curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+sudo yum install -y nodejs
 
-sudo yum repolist
-sudo amazon-linux-extras install epel -y
-
-sudo yum install unzip -y
-cd ~/ && unzip webapp.zip
-cd ~/webapp && npm install
-npm run build
+unzip webapp.zip -d webapp
+cd /home/ec2-user/webapp
+npm i
 
 sudo mv /tmp/web.service /etc/systemd/system/web.service
-sudo systemctl enable web.service
-sudo systemctl start web.service
