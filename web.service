@@ -1,6 +1,6 @@
 [Unit]
 Description=CSYE 6225 webapp
-After=multi-user.target
+After=cloud-final.service
 
 [Service]
 ExecStart=/home/ec2-user/.nvm/versions/node/v16.19.1/bin/node /home/ec2-user/webapp/server.js
