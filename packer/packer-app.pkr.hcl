@@ -3,11 +3,6 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-variable "source_ami" {
-  type    = string
-  default = "ami-0dfcb1ef8550277af"
-}
-
 variable "ssh_username" {
   type    = string
   default = "ec2-user"
@@ -23,23 +18,31 @@ variable "ami_users" {
   default = ["926230493760"]
 }
 
-source "amazon-ebs" "app-ami" {
+source "amazon-ebs" "amazon_linux_image" {
   region          = "${var.aws_region}"
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
-  ami_description = "AMI test"
+  ami_description = "AMI for CSYE 225"
   ami_users       = var.ami_users
   ami_regions = [
-    "us-east-1",
+    var.aws_region
   ]
 
   aws_polling {
     delay_seconds = 120
     max_attempts  = 50
   }
-
+  
+  source_ami_filter {
+    filters = {
+      name                = "amzn2-ami-kernel-5.10-hvm-2.0.20230207.0-x86_64-gp2"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+    }
+    most_recent = true
+    owners      = ["amazon"]
+  }
 
   instance_type = "t2.micro"
-  source_ami    = "${var.source_ami}"
   ssh_username  = "${var.ssh_username}"
   subnet_id     = "${var.subnet_id}"
   profile       = "dev"  
@@ -53,7 +56,7 @@ source "amazon-ebs" "app-ami" {
 }
 
 build {
-  sources = ["source.amazon-ebs.app-ami"]
+  sources = ["source.amazon-ebs.amazon_linux_image"]
   
   provisioner "file" {
       source = "./webapp.zip"
