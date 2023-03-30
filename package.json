@@ -28,7 +28,9 @@
         "dotenv": "^16.0.3",
         "aws-sdk": "^2.1324.0",
         "multer": "^1.4.5-lts.1",
-        "express-fileupload": "^1.4.0"
+        "express-fileupload": "^1.4.0",
+        "winston": "^3.8.2",
+        "node-statsd": "^0.1.1"
     },
     "devDependencies": {
         "jest": "^29.4.1",

@@ -1,6 +1,7 @@
 ﻿const bcrypt = require('bcryptjs');
 const db = require('_helpers/db');
 var validator = require("email-validator");
+const logger = require('_helpers/logger');
 
 module.exports = {
     getById,
@@ -18,6 +19,7 @@ async function user(params) {
     }
 
     if (params.password) {
+        logger.info("Password validated");
         params.password = await bcrypt.hash(params.password, 10);
     }
 
