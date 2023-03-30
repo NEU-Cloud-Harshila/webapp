@@ -4,6 +4,7 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const errorHandler = require('_middleware/error-handler');
+const logger = require('./_helpers/logger');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -11,7 +12,8 @@ app.use(cors());
 
 // api routes
 app.use('/healthz', (req,res)=>{
-    return res.status(200).json({ 
+    logger.info("Service is up and running");
+    return res.status(200).json({
         httpResponseCode: 200,
         message: 'OK' });
 });
