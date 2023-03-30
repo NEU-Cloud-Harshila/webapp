@@ -2,6 +2,9 @@
 const db = require('_helpers/db');
 var validator = require("email-validator");
 const logger = require('_helpers/logger');
+const StatsD = require('node-statsd');
+const client = new StatsD();
+
 
 module.exports = {
     getById,
@@ -14,6 +17,8 @@ async function getById(id) {
 }
 
 async function user(params) {
+    client.increment('Create user');
+
     if (await db.User.findOne({ where: { username: params.username } })) {
         throw 'Bad Request. Username "' + params.username + '" already exists.';
     }
