@@ -1,5 +1,5 @@
 const express = require('express');
-const logger = require('_helpers/logger');
+const logger = require('./_helpers/logger');
 
 const app = express();
 app.use('/healthz', (req,res)=>{
