@@ -1,4 +1,4 @@
-# Assignment 6 demo
+# Assignment 7
 
 Harshila Jagtap
 
@@ -47,8 +47,16 @@ mkdir cloud
         "mysql2": "^2.1.0",
         "rootpath": "^0.1.2",
         "sequelize": "^6.3.4",
-        "supertest": "^6.3.3"
+        "supertest": "^6.3.3",
+        "dotenv": "^16.0.3",
+        "aws-sdk": "^2.1324.0",
+        "multer": "^1.4.5-lts.1",
+        "express-fileupload": "^1.4.0",
+        "winston": "^3.8.2",
+        "node-statsd": "^0.1.1"
 
+
+Cloudwatch logging and metrics has been added for all the below endpoints.
 
 # Below are the Web APIs implemented : 
 

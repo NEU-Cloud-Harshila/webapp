@@ -5,7 +5,6 @@ const logger = require('_helpers/logger');
 const StatsD = require('node-statsd');
 const client = new StatsD();
 
-
 module.exports = {
     getById,
     user,
@@ -13,14 +12,25 @@ module.exports = {
 };
 
 async function getById(id) {
-    return await getUser(id);
+    logger.info(`Getting user by ID ${id}`);
+
+    client.increment('Get user');
+    const user = await getUser(id);
+
+    logger.info(`Got user by ID ${id}: ${JSON.stringify(user)}`);
+
+    return user;
 }
 
 async function user(params) {
+    logger.info(`Creating user: ${JSON.stringify(params)}`);
+
     client.increment('Create user');
 
     if (await db.User.findOne({ where: { username: params.username } })) {
-        throw 'Bad Request. Username "' + params.username + '" already exists.';
+        const errorMsg = `Bad Request. Username "${params.username}" already exists.`;
+        logger.error(errorMsg);
+        throw errorMsg;
     }
 
     if (params.password) {
@@ -28,8 +38,11 @@ async function user(params) {
         params.password = await bcrypt.hash(params.password, 10);
     }
 
-    if (!validator.validate(params.username))
-        throw 'Entered Username "' + params.username + '" value is not in correct format. ';
+    if (!validator.validate(params.username)) {
+        const errorMsg = `Entered username "${params.username}" value is not in correct format.`;
+        logger.error(errorMsg);
+        throw errorMsg;
+    }
 
     var userInfo;
     if (await db.User.create(params)) {
@@ -40,14 +53,18 @@ async function user(params) {
         })
     }
 
+    logger.info(`Created user: ${JSON.stringify(userInfo)}`);
+
     return omitPassword(userInfo.get());
 }
 
 async function update(id, params) {
+    logger.info(`Updating user by ID ${id}: ${JSON.stringify(params)}`);
+
+    client.increment('Update user');
     const user = await getUser(id);
     var key = "username";
     delete params[key];
-    console.log(params);
 
     if (params.password) {
         params.password = await bcrypt.hash(params.password, 10);
@@ -55,14 +72,26 @@ async function update(id, params) {
 
     Object.assign(user, params);
     await user.save();
+    logger.info(`Updated user by ID ${id}: ${JSON.stringify(user)}`);
 
     return omitPassword(user.get());
 }
 
 async function getUser(id) {
+    logger.info(`Getting user by ID ${id}`);
+
     const user = await db.User.findByPk(id);
-    if (!user) throw 'User not found';
+
+    if (!user) {
+        const errorMsg = 'User not found with ID ${id}';
+        logger.error(errorMsg);
+        throw errorMsg;
+    }
+
+    logger.info(`Got user by ID ${id}: ${JSON.stringify(user)}`);
+
     return omitPassword(user.get());
+
 }
 
 function omitPassword(user) {
