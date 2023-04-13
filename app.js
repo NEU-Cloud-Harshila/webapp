@@ -20,6 +20,16 @@ app.use('/healthz', (req,res)=>{
         httpResponseCode: 200,
         message: 'OK' });
 });
+
+// api routes
+app.use('/health', (req,res)=>{
+    client.increment('Health');
+    logger.info("Service is up and running");
+    return res.status(200).json({
+        httpResponseCode: 200,
+        message: 'OK' });
+});
+
 app.use('/', require('./users/users.controller'));
 app.use('/', require('./products/products.controller'));
 app.use('/', require('./images/images.controller'));
