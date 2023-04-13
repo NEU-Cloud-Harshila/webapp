@@ -4,8 +4,6 @@ on:
   push:
     branches: [main]
 
-  workflow_dispatch:
-
 jobs:
   packer-build:
     name: Packer Build
@@ -24,3 +22,22 @@ jobs:
         run: packer init packer
       - name: Packer Build - Branches
         run: packer build packer
+      - name: Configure AWS Demo Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEMO }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEMO }}
+         aws-region: us-east-1
+      - name: Copy AMI artifact and launch the template
+        working-directory: ./packer
+        run: |
+          AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
+          echo $AMI_ID
+          LT_ID=$(aws ec2 describe-launch-templates --launch-template-name asg_launch_config | jq '.LaunchTemplates[].LaunchTemplateId')
+          LT_ID="${LT_ID%\"}"
+          LT_ID="${LT_ID#\"}"
+          echo $LT_ID
+          aws ec2 create-launch-template-version --launch-template-id $LT_ID --version-description WebVersion2 --source-version 1 --launch-template-data "ImageId=$AMI_ID"
+          aws autoscaling update-auto-scaling-group --auto-scaling-group-name csye6225-auto-scale-group --launch-template LaunchTemplateId=$LT_ID,Version='$Latest'
+      - name: Refresh the Instance
+        run: aws autoscaling start-instance-refresh --auto-scaling-group-name csye6225-auto-scale-group
