@@ -1,4 +1,4 @@
-# Assignment 8
+# Assignment 9
 
 Harshila Jagtap
 
@@ -451,17 +451,6 @@ HTTP Response Code : 204 No Content
 
 # .github Workflows
 
-1. Build, create zip and copy the webapp artifacts to the right location
+Build, create zip and copy the webapp artifacts to the right location
 
-2. Validate the Packer
-
-  --> packer init ami.pkr.hcl
-
-  --> packer validate -var 'aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}' -var 'aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}' --var-file=aws.pkvars.hcl ami.pkr.hcl
-
-
-on merge Build the Packer Image
-
-follow all previous commands with 
-
---> packer build -var 'aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}' -var 'aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}' --var-file=aws.pkvars.hcl ami.pkr.hcl
+Deploy the artifacts to the requisite configuration
