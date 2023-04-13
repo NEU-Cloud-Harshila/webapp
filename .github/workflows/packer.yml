@@ -33,7 +33,7 @@ jobs:
         run: |
           AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
           echo $AMI_ID
-          LT_ID=$(aws ec2 describe-launch-templates --launch-template-name asg_launch_config | jq '.LaunchTemplates[].LaunchTemplateId')
+          LT_ID=$(aws ec2 describe-launch-templates --launch-template-name launch_configuration | jq '.LaunchTemplates[].LaunchTemplateId')
           LT_ID="${LT_ID%\"}"
           LT_ID="${LT_ID#\"}"
           echo $LT_ID
