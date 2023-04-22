@@ -22,7 +22,7 @@ app.use('/healthz', (req,res)=>{
 });
 
 // api routes
-app.use('/health', (req,res)=>{
+app.use('/harshila', (req,res)=>{
     client.increment('Health');
     logger.info("Service is up and running");
     return res.status(200).json({
